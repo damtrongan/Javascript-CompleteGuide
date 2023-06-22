@@ -4,6 +4,7 @@ const bandAn = "AN";
 const bandTrang = "TRANG";
 const bandAn2 = "AN2";
 const DEAFAULT_USER_CHOICE = bandAn;
+const gameIsRunning = false;
 
 function selectUser() {
   const selection = prompt(
@@ -22,6 +23,10 @@ function selectUser() {
 }
 
 startGameBtn.addEventListener("click", () => {
+   if(gameIsRunning) {
+      return;
+   }
+   gameIsRunning = true;
    console.log("Game starting now");
    var selection = selectUser();
    console.log(selection);
