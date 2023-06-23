@@ -4,7 +4,7 @@ const bandAn = "AN";
 const bandTrang = "TRANG";
 const bandAn2 = "AN2";
 const DEAFAULT_USER_CHOICE = bandAn;
-const gameIsRunning = false;
+let gameIsRunning = true;
 
 function selectUser() {
   const selection = prompt(
