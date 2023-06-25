@@ -59,17 +59,33 @@ startGameBtn.addEventListener("click", () => {
   gameIsRunning = false;
 });
 
+// not related to game
 
-const sumUp = (a, b, ...numbers) => {
+
+const combine = (resultHandle, operator, ...numbers) => {
   let sum = 0;
+  //
   const validateNumber = (number) => {
     return isNaN(number) ? 0 : number;
   }
-
-  for (const number of numbers) {
-    sum += validateNumber(number)
+  //
+  if(operator === 'SUM'){
+    for (const number of numbers) {
+      sum += validateNumber(number)
+    }
+  }else if(operator === 'SUBTRACT'){
+    for (const number of numbers) {
+      sum -= validateNumber(number)
+    }
+  }else{
+    console.log("Don't support this operator");
   }
-  return sum;
+  resultHandle(sum);
 }
 
-console.log(sumUp(1,3,4,'ads', 3,4));
+const showResult = (message, result) => {
+  alert (message + '' + result);
+}
+
+combine(showResult.bind(this, "The result is: "), "SUM", 1,2,"ads",3);
+
