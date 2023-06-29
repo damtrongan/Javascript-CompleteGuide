@@ -6,21 +6,29 @@ const movies = [];
 const renderMovies = () => {
   const movieList = document.getElementById("movie-list");
 
-  if(movies.length === 0 ) {
-    movieList.classList.remove("visible")
+  if (movies.length === 0) {
+    movieList.classList.remove("visible");
     return;
-  }else{
-    movieList.classList.add("visible")
+  } else {
+    movieList.classList.add("visible");
   }
-
   movieList.innerHTML = "";
 
-  movies.forEach(movie => {
-    const movieEl = document.createElement('li');
-    movieEl.textContent = movie.info.title;
+  movies.forEach((movie) => {
+    const movieEl = document.createElement("li");
+    let text = movie.info.title + " - ";
+    console.log(text);
+    for (const key in movie.info) {
+      if (key !== "title") {
+        console.log(key);
+        text = text + `${key}: ${movie.info[key]}`;
+      }
+    }
+    movieEl.textContent = text;
     movieList.append(movieEl);
-  })
-}
+  });
+};
+
 const addMovieHandler = () => {
   const title = document.getElementById("title").value;
   const extraName = document.getElementById("extra-name").value;
@@ -35,14 +43,14 @@ const addMovieHandler = () => {
   }
 
   const newMovie = {
-   info : {
-      title,
-      [extraName] : extraValue
-   },
-   id: Math.random()
+    info: {
+      title ,
+      [extraName]: extraValue,
+    },
+    id: Math.random(),
   };
   movies.push(newMovie);
   console.log(newMovie);
   renderMovies();
 };
-addMovieBtn.addEventListener('click', addMovieHandler)
+addMovieBtn.addEventListener("click", addMovieHandler);
