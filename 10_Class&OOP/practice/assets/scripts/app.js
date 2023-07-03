@@ -54,7 +54,6 @@ class ProductList {
   ];
 
   render() {
-    const renderHook = document.getElementById("app");
     const prodList = document.createElement("ul");
     prodList.className = "product-list";
     for (const prod of this.products) {
@@ -62,8 +61,35 @@ class ProductList {
       const prodEl = productItem.render();
       prodList.append(prodEl);
     }
-    renderHook.append(prodList);
+    return prodList;
   }
 }
-const productList = new ProductList();
-productList.render();
+
+class ShoppingCart {
+  item = [];
+  addProduct(product) {
+    this.totalOutput = `<h2>Total: \$${1} </h2>`; 
+  }
+  render(){
+    this.totalOutput = cartEl.querySelector('h2');
+  }
+}
+
+class Shop{
+  render(){
+    const renderHook = document.getElementById("app");
+    
+    const shoppingCart = new ShoppingCart();
+    const cartEl = shoppingCart.render();
+
+    const productList = new ProductList();
+    const prodList = productList.render();
+
+    renderHook.append(cartEl);
+    renderHook.append(prodList)
+  }
+}
+
+
+const shop = new Shop();
+shop.render();
