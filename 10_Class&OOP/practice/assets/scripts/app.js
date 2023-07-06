@@ -1,20 +1,25 @@
 class ElementAttribute {
   constructor(attrName, attrValue) {
-    this.attrName = attrName;
-    this.attrValue = attrValue;
+    this.name = attrName;
+    this.value = attrValue;
   }
 }
 
 class Component {
   constructor(renderHookId) {
     this.hookId = renderHookId;
+    //this.render()
+    console.log(this);
   }
+  // render(){
+
+  // }
   createRootElement(tag, cssClass, attributes) {
     const rootElement = document.createElement(tag);
     if (cssClass) {
       rootElement.className = cssClass;
     }
-    if (attributes && attributes.lenght > 0) {
+    if (attributes && attributes.length > 0) {
       for (const attr of attributes) {
         rootElement.setAttribute(attr.name, attr.value);
       }
@@ -37,6 +42,7 @@ class ProductItem extends Component {
   constructor(renderHook, product) {
     super(renderHook);
     this.product = product;
+    this.render();
   }
 
   addToCart() {
@@ -45,8 +51,6 @@ class ProductItem extends Component {
   }
 
   render() {
-    // const prodEl = document.createElement("li");
-    // prodEl.className = "product-item";
     const prodEl = this.createRootElement("li", "product-item");
     prodEl.innerHTML = `
         <div>
@@ -65,33 +69,39 @@ class ProductItem extends Component {
 }
 
 class ProductList extends Component {
-  products = [
-    new Product(
-      "A Pillow",
-      "https://www.maxpixel.net/static/photo/2x/Soft-Pillow-Green-Decoration-Deco-Snuggle-1241878.jpg",
-      "A soft pillow!",
-      19.99
-    ),
-    new Product(
-      "A Carpet",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Ardabil_Carpet.jpg/397px-Ardabil_Carpet.jpg",
-      "A carpet which you might like - or not.",
-      89.99
-    ),
-  ];
+  fetchProduct() {
+    return [
+      new Product(
+        "A Pillow",
+        "https://www.maxpixel.net/static/photo/2x/Soft-Pillow-Green-Decoration-Deco-Snuggle-1241878.jpg",
+        "A soft pillow!",
+        19.99
+      ),
+      new Product(
+        "A Carpet",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Ardabil_Carpet.jpg/397px-Ardabil_Carpet.jpg",
+        "A carpet which you might like - or not.",
+        89.99
+      ),
+    ];
+  }
 
-  constructor(hookId){
-    super(hookId);
+  renderProduct(){
+    const products = this.fetchProduct();
+    for (const prod of products) {
+      new ProductItem("prod-list", prod);
+    }
+  }
+
+  constructor(renderHookId) {
+    super(renderHookId);
+    this.render();
   }
   render() {
     this.createRootElement("ul", "product-list", [
       new ElementAttribute("id", "prod-list"),
     ]);
-    //prodList.id = "product-list";
-    for (const prod of this.products) {
-      const productItem = new ProductItem("prod-list", prod);
-      productItem.render();
-    }
+    this.renderProduct();
   }
 }
 
@@ -114,6 +124,7 @@ class ShoppingCart extends Component {
   }
   constructor(renderHookId) {
     super(renderHookId);
+    this.render();
   }
   addProduct(product) {
     const updateProduct = [...this.items];
@@ -131,25 +142,22 @@ class ShoppingCart extends Component {
   }
 }
 
-class Shop extends Component {
+class Shop {
+  constructor() {
+    this.render();
+  }
   render() {
     this.cart = new ShoppingCart("app");
-    this.cart.render();
-
     const productList = new ProductList("app");
-    productList.render();
   }
 }
 
 class App {
   //static cart;
-
   static init() {
     const shop = new Shop();
-    shop.render();
     this.cart = shop.cart;
   }
-
   static addCart(product) {
     this.cart.addProduct(product);
   }
