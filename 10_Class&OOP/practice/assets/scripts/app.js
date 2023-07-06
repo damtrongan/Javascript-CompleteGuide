@@ -6,14 +6,14 @@ class ElementAttribute {
 }
 
 class Component {
-  constructor(renderHookId) {
+  constructor(renderHookId, shouldRender = true) {
     this.hookId = renderHookId;
-    //this.render()
+    if (shouldRender) {
+      this.render();
+    }
     console.log(this);
   }
-  // render(){
-
-  // }
+  //render(){}
   createRootElement(tag, cssClass, attributes) {
     const rootElement = document.createElement(tag);
     if (cssClass) {
@@ -28,7 +28,6 @@ class Component {
     return rootElement;
   }
 }
-
 class Product {
   constructor(title, image, desc, price) {
     this.title = title;
@@ -40,7 +39,7 @@ class Product {
 
 class ProductItem extends Component {
   constructor(renderHook, product) {
-    super(renderHook);
+    super(renderHook, false);
     this.product = product;
     this.render();
   }
@@ -69,8 +68,15 @@ class ProductItem extends Component {
 }
 
 class ProductList extends Component {
-  fetchProduct() {
-    return [
+  //products = [];
+
+  constructor(renderHookId) {
+    super(renderHookId);
+    this.fetchProducts();
+  }
+
+  fetchProducts() {
+    this.products = [
       new Product(
         "A Pillow",
         "https://www.maxpixel.net/static/photo/2x/Soft-Pillow-Green-Decoration-Deco-Snuggle-1241878.jpg",
@@ -84,24 +90,24 @@ class ProductList extends Component {
         89.99
       ),
     ];
+    console.log(this);
+    this.renderProducts();
   }
 
-  renderProduct(){
-    const products = this.fetchProduct();
-    for (const prod of products) {
+  renderProducts() {
+    for (const prod of this.products) {
       new ProductItem("prod-list", prod);
     }
   }
 
-  constructor(renderHookId) {
-    super(renderHookId);
-    this.render();
-  }
   render() {
     this.createRootElement("ul", "product-list", [
       new ElementAttribute("id", "prod-list"),
     ]);
-    this.renderProduct();
+
+    if (this.products && this.products.length > 0) {
+      this.renderProducts();
+    }
   }
 }
 
@@ -122,16 +128,22 @@ class ShoppingCart extends Component {
     );
     return sum;
   }
+
   constructor(renderHookId) {
     super(renderHookId);
-    this.render();
   }
+
   addProduct(product) {
     const updateProduct = [...this.items];
     updateProduct.push(product);
     this.cartItems = updateProduct;
   }
 
+  orderProducts(){
+      console.log(this.items);
+      console.log("Hello there");
+  }
+  
   render() {
     const cartEl = this.createRootElement("section", "cart");
     cartEl.innerHTML = `
@@ -139,6 +151,8 @@ class ShoppingCart extends Component {
     <button>Order</button>
     `;
     this.totalOutput = cartEl.querySelector("h2");
+    this.orderBtn = cartEl.querySelector("button");
+    this.orderBtn.addEventListener('click', this.orderProducts.bind(this));
   }
 }
 
@@ -148,12 +162,11 @@ class Shop {
   }
   render() {
     this.cart = new ShoppingCart("app");
-    const productList = new ProductList("app");
+    new ProductList("app");
   }
 }
 
 class App {
-  //static cart;
   static init() {
     const shop = new Shop();
     this.cart = shop.cart;
