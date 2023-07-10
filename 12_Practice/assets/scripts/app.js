@@ -9,7 +9,17 @@ class ProjectItem {
 
 class ProjectList {
   constructor(type) {
-    const prjItém = document.querySelector(`#${type}-projects`)
+    const prjItems = document.querySelector(`#${type}-projects`)
+    console.log(prjItems);
+    
+  }
+
+  connectMoreButton(){
+
+  }
+  
+  connectSwitchButton(){
+
   }
 }
 
