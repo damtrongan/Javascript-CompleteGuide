@@ -2,16 +2,19 @@
 class Tooltip {}
 
 class ProjectItem {
-  constructor(project) {
-
+  constructor(projectId) {
+    this.id = projectId;
   }
 }
 
 class ProjectList {
+  projects = [];
   constructor(type) {
-    const prjItems = document.querySelector(`#${type}-projects`)
-    console.log(prjItems);
-    
+    const prjItems = document.querySelectorAll(`#${type}-projects li`)
+    for (const project of prjItems){
+      this.projects.push(new ProjectItem(project.id));
+    }
+    console.log(this.projects);    
   }
 
   connectMoreButton(){
