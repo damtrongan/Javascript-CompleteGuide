@@ -7,19 +7,25 @@ class ProjectItem {
     this.connectMoreButton();
     this.connectSwitchButton();
   }
-  handlerMoreBtn(){
+  
+  handlerMoreButton(){
     alert("hello")
+  }
+
+  handlerLastBtn(){
+     
   }
 
   connectMoreButton() {
     const moreBtn = this.projectItemElement.querySelector('.alt');
-    moreBtn.addEventListener('click', this.handlerMoreBtn)
+    moreBtn.addEventListener('click', this.handlerLastBtn)
   }
 
   connectSwitchButton() {
-    const finishBtn = this.projectItemElement.querySelector('button:last-of-type');
-    finishBtn.addEventListener('click', this.handlerMoreBtn)
+    const lastBtn = this.projectItemElement.querySelector('button:last-of-type');
+    lastBtn.addEventListener('click', this.handlerLastBtn)
   }
+
 }
 
 class ProjectList {
@@ -29,14 +35,15 @@ class ProjectList {
     for (const prjItem of prjItems){
       this.projects.push(new ProjectItem(prjItem.id));
     }
-    console.log(this.projects);
   }
 
   addProject(id) {
     
   }
 
-  switchProject(projectId) {}
+  switchProject(projectId) {
+
+  }
 
 }
 
