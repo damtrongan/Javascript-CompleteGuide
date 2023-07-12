@@ -1,29 +1,43 @@
-
 class Tooltip {}
 
 class ProjectItem {
-  constructor(projectId) {
-    this.id = projectId;
+  constructor(id) {
+    this.id = id;
+    this.projectItemElement = document.getElementById(this.id);
+    this.connectMoreButton();
+    this.connectSwitchButton();
+  }
+  handlerMoreBtn(){
+    alert("hello")
+  }
+
+  connectMoreButton() {
+    const moreBtn = this.projectItemElement.querySelector('.alt');
+    moreBtn.addEventListener('click', this.handlerMoreBtn)
+  }
+
+  connectSwitchButton() {
+    const finishBtn = this.projectItemElement.querySelector('button:last-of-type');
+    finishBtn.addEventListener('click', this.handlerMoreBtn)
   }
 }
 
 class ProjectList {
   projects = [];
   constructor(type) {
-    const prjItems = document.querySelectorAll(`#${type}-projects li`)
-    for (const project of prjItems){
-      this.projects.push(new ProjectItem(project.id));
+    const prjItems = document.querySelectorAll(`#${type}-projects li`);
+    for (const prjItem of prjItems){
+      this.projects.push(new ProjectItem(prjItem.id));
     }
-    console.log(this.projects);    
+    console.log(this.projects);
   }
 
-  connectMoreButton(){
-
+  addProject(id) {
+    
   }
-  
-  connectSwitchButton(){
 
-  }
+  switchProject(projectId) {}
+
 }
 
 class App {
