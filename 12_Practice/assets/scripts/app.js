@@ -7,13 +7,18 @@ class ProjectItem {
     this.connectMoreButton();
     this.connectSwitchButton();
   }
-  handlerMoreBtn(){
+  
+  handlerMoreButton(){
     alert("hello")
+  }
+
+  handlerLastBtn(){
+     
   }
 
   connectMoreButton() {
     const moreBtn = this.projectItemElement.querySelector('.alt');
-    moreBtn.addEventListener('click', this.handlerMoreBtn)
+    moreBtn.addEventListener('click', this.handlerLastBtn)
   }
 
   connectSwitchButton() {
@@ -21,6 +26,7 @@ class ProjectItem {
     finishBtn.addEventListener('click', this.handlerMoreBtn)
     
   }
+
 }
 
 class ProjectList {
@@ -30,7 +36,6 @@ class ProjectList {
     for (const prjItem of prjItems){
       this.projects.push(new ProjectItem(prjItem.id));
     }
-    console.log(this.projects);
   }
 
   setSwitchHandlerFunc(func){
