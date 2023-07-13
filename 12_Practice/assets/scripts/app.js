@@ -19,6 +19,7 @@ class ProjectItem {
   connectSwitchButton() {
     const finishBtn = this.projectItemElement.querySelector('button:last-of-type');
     finishBtn.addEventListener('click', this.handlerMoreBtn)
+    
   }
 }
 
@@ -32,11 +33,20 @@ class ProjectList {
     console.log(this.projects);
   }
 
-  addProject(id) {
+  setSwitchHandlerFunc(func){
+    this.switchHandler = func;
+  }
+
+  addProject(projectId) {
     
   }
 
-  switchProject(projectId) {}
+  switchProject(projectId) {
+    const projectIndex = this.projects.findIndex(p => p.id === projectId);
+    this.projects.splice(projectIndex, 1);
+
+
+  }
 
 }
 
@@ -44,6 +54,7 @@ class App {
   static init() {
     const activeProjectList = new ProjectList("active");
     const finishedProjectList = new ProjectList("finished");
+      
   }
 }
 
