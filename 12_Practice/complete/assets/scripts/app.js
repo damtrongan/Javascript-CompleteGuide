@@ -1,7 +1,6 @@
 class DOMHelper {
   static clearEventsListeners(element) {
     const clonedElement = element.cloneNode(true);
-    console.log(clonedElement);
     element.replaceWith(clonedElement);
     return clonedElement;
   }
@@ -23,6 +22,7 @@ class Component {
       this.hostElement = document.body;
     }
     this.insertBefore = insertBefore;
+    console.log(this);
   }
 
   detach() {
@@ -70,6 +70,7 @@ class ProjectItem {
     this.projectItemElement = document.getElementById(this.id);
     this.connectMoreButton();
     this.connectSwitchButton(type);
+    console.log(this);
   }
 
   showMoreInfoHandler() {
@@ -117,15 +118,13 @@ class ProjectList {
         new ProjectItem(prjItem.id, this.switchProject.bind(this))
       );
     }
+    console.log(this);
   }
-
-  setSwitchHandlerFunc(switchHandlerFunction) {
-    this.switchHandlerFunction = switchHandlerFunction;
-  }
+  
 
   addProject(project) {
+    console.log(project);
     this.projects.push(project);
-    console.log(this.type);
     DOMHelper.moveElement(project.id, `#${this.type}-projects ul`);
     project.update(this.switchProject.bind(this), this.type);
   }
