@@ -2,24 +2,23 @@ class DOMHelper {
   static clearEventsListeners(element) {
     const clonedElement = element.cloneNode(true);
     element.replaceWith(clonedElement);
+    console.log(clonedElement);
     return clonedElement;
   }
 
   static moveElement(elementId, newDestinationSelector) {
     const element = document.getElementById(elementId);
-    console.log(element);
     const destinationElement = document.querySelector(newDestinationSelector);
     destinationElement.append(element);
-    console.log(destinationElement);
   }
 }
 
 class Component {
-  constructor(rootId, cssClass, attributes){
+  constructor(rootId, cssClass, attributes) {
     const rootElement = document.getElementById(rootId);
     rootElement.className = cssClass;
-    if(attributes){
-      for(const attr of attributes){
+    if (attributes) {
+      for (const attr of attributes) {
         rootElement.attributes = attr;
       }
     }
@@ -37,22 +36,25 @@ class ProjectItem {
 
   handlerMoreBtn() {}
 
-  handlerSwitchBtn(type) {
-    const switchBtn = this.projectEl.querySelector("button:last-of-type");
-    console.log(switchBtn.textContent);
-    switchBtn.textContent = type === 'active' ?  'Activate' : 'Finish';
-    DOMHelper.clearEventsListeners(this.projectEl);
-    this.functionSwitchProject(this.id);
-      
-  }
-
   connectMoreButton() {
     const moreBtn = this.projectEl.querySelector("button:first-of-type");
   }
 
   connectSwitchButton(type) {
-    const finishBtn = this.projectEl.querySelector("button:last-of-type");
-    finishBtn.addEventListener("click", this.handlerSwitchBtn.bind(null ,this.id));
+    let switchBtn = this.projectEl.querySelector("button:last-of-type");
+    console.log(this);
+    switchBtn = DOMHelper.clearEventsListeners(switchBtn);
+    switchBtn.textContent = type === "active" ? "Activate" : "Finish";
+    switchBtn.addEventListener(
+      "click",
+      this.functionSwitchProject.bind(null, this.id),
+      this.type
+    );
+  }
+
+  update(functionHandleProject, type) {
+    this.functionSwitchProject = functionHandleProject;
+    this.connectSwitchButton(type);
   }
 }
 
@@ -68,7 +70,6 @@ class ProjectList {
       );
     }
     //console.log(this.projects);
-
   }
 
   setSwitchProjectHandler(switchProjectFunction) {
@@ -80,7 +81,7 @@ class ProjectList {
     this.projects.push(project);
     console.log(project);
     DOMHelper.moveElement(project.id, `#${this.type}-projects ul`);
-    
+    project.update(this.swapProject.bind(this), this.type);
   }
 
   swapProject(projectId) {
@@ -88,7 +89,8 @@ class ProjectList {
       1. Đẩy project từ Active sang Finish Class
       2. Remove project trong active
     **/
-    this.switchProjectFunction(this.projects.find(p => p.id === projectId));
+    console.log(this);
+    this.switchProjectFunction(this.projects.find((p) => p.id === projectId));
     this.projects = this.projects.filter((p) => p.id !== projectId);
   }
 }
