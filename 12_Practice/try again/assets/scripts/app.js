@@ -2,7 +2,6 @@ class DOMHelper {
   static clearEventsListeners(element) {
     const clonedElement = element.cloneNode(true);
     element.replaceWith(clonedElement);
-    console.log(clonedElement);
     return clonedElement;
   }
 
@@ -14,14 +13,50 @@ class DOMHelper {
 }
 
 class Component {
-  constructor(rootId, cssClass, attributes) {
-    const rootElement = document.getElementById(rootId);
-    rootElement.className = cssClass;
-    if (attributes) {
-      for (const attr of attributes) {
-        rootElement.attributes = attr;
-      }
+  constructor(hostElementId, insertBefore = false) {
+    if (hostElementId) {
+      this.hostElement = document.getElementById(hostElementId);
+    } else {
+      this.hostElement = document.body;
     }
+    this.insertBefore = insertBefore;
+    console.log(this);
+  }
+
+  detach() {
+    if (this.element) {
+      this.element.remove();
+    }
+    this.element.remove();
+    //this.element.parentElement.removeChild(this.element);
+  }
+
+  attach() {
+    this.hostElement.insertAdjacentElement(
+      this.insertBefore ? "beforebegin" : "beforeend",
+      this.element
+    );
+  }
+}
+
+class Tooltip extends Component {
+  constructor(closeNotifierFunction) {
+    super('finished-projects', true);
+    this.closeNotifier = closeNotifierFunction;
+    this.create();
+  }
+
+  closeTooltip = () => {
+    this.detach();
+    this.closeNotifier();
+  };
+
+  create() {
+    const tooltipElement = document.createElement("div");
+    tooltipElement.className = "card";
+    tooltipElement.textContent = "aaa";
+    tooltipElement.addEventListener("click", this.closeTooltip);
+    this.element = tooltipElement;
   }
 }
 
@@ -34,10 +69,16 @@ class ProjectItem {
     this.connectSwitchButton(type);
   }
 
-  handlerMoreBtn() {}
+  handlerMoreBtn() {
+    const tooltip = new Tooltip();
+    tooltip.attach();
+    
+  }
 
   connectMoreButton() {
     const moreBtn = this.projectEl.querySelector("button:first-of-type");
+    
+    moreBtn.addEventListener('click', this.handlerMoreBtn);
   }
 
   connectSwitchButton(type) {
@@ -79,7 +120,7 @@ class ProjectList {
   addProject(project) {
     // project.type = "active"? 'finished' : 'active'
     this.projects.push(project);
-    console.log(project);
+    //console.log(project);
     DOMHelper.moveElement(project.id, `#${this.type}-projects ul`);
     project.update(this.swapProject.bind(this), this.type);
   }
@@ -89,7 +130,7 @@ class ProjectList {
       1. Đẩy project từ Active sang Finish Class
       2. Remove project trong active
     **/
-    console.log(this);
+    //console.log(this);
     this.switchProjectFunction(this.projects.find((p) => p.id === projectId));
     this.projects = this.projects.filter((p) => p.id !== projectId);
   }
