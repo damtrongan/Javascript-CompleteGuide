@@ -35,23 +35,40 @@
 person = {
   name: "An",
   friends: [
-    { name: "Hoang", friends: [{name: 'a'}] },
-    { name: "Trang", friends: [{ name: "Sung" }, { name: "Suong" }] },
+    { 
+      name: "Hoang", 
+      friends: [
+         { 
+            name: "a" }] },
+    { 
+      name: "Trang", 
+      friends: [
+         { 
+            name: "Sung" }, 
+         { 
+            name: "Suong" }
+         ] },
   ],
 };
 
+function findFriend(person) {
+  collectNames = [];
 
-function findFriend(person){
-   collectNames = [];
+  if (!person.friends) {
+    return [];
+  }
 
-   if (!person.friends){
-      return [];
-   }
-
-   for (const friend of person.friends){
-      collectNames.push(friend.name);
-      collectNames.push(...findFriend(friend));
-   }
-   return collectNames;
+  for (const friend of person.friends) {
+    collectNames.push(friend.name);
+    collectNames.push(...findFriend(friend));
+  }
+  return collectNames;
 }
 console.log(findFriend(person));
+
+
+function randomIntBetween(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+console.log(randomIntBetween(1, 5));
+
