@@ -8,6 +8,7 @@ export class ProjectItem {
 
   constructor(id, updateProjectListsFunction, type) {
     this.id = id;
+    this.hasActiveTooltip = false;
     this.updateProjectListsHandler = updateProjectListsFunction;
     this.connectMoreInfoButton();
     this.connectSwitchButton(type);
