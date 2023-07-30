@@ -71,6 +71,8 @@ trackUserHandler();
 //   console.log(promiseData);
 // });
 
+// Trả về trạng thái và value của promise, 
+// nếu 1 cái không thực hiện được nó vẫn thực hiện và trả về trạng thái khác fulfilled
 Promise.allSettled([getPosition(), setTimer(1000)]).then((promiseData) => {
   console.log(promiseData);
 });
